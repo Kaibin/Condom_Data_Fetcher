@@ -1,0 +1,8 @@
+<%!
+    import simplejson as json
+
+    def to_json(d):
+        return json.dumps(d, ensure_ascii=False)
+%>
+
+${to_json(data)}
