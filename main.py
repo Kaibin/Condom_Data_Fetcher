@@ -4,6 +4,7 @@ from os.path import join, dirname, abspath
 import _env
 from mako.lookup import Template
 from BeautifulSoup import BeautifulSoup
+import pymongo
 
 PREFIX = join(dirname(abspath(__file__)))
 HTTP = 'http://www.durex.com.cn%s'
@@ -78,6 +79,27 @@ class item(Handler):
                     ]
                 )
             )
+    @classmethod
+    def writedb(cls):
+        page = cls.page
+        connection = pymongo.Connection('localhost', 27017)
+        db = connection.condom
+        collection = db.item
+
+        for link, title, subtitle, description, smooth_index, information, tips, pic1, pic2, pic3, pic4 in cls.page:
+            item = {"title":title,
+                    "subtitle":subtitle,
+                    "description":description,
+                    "smooth_index":smooth_index,
+                    "information":information,
+                    "tips":tips,
+                    "pic1":pic1,
+                    "pic2":pic2,
+                    "pic3":pic3,
+                    "pic4":pic4
+            }
+            collection.insert(item)
+
 
 @route('/images/.+')
 class pic(Handler):
@@ -101,5 +123,5 @@ def save_pic(content, fname):
 if __name__ == '__main__':
     spider.put('http://www.durex.com.cn/products')
     spider.run(5,100)
-    item.write()
+    item.writedb()
 
