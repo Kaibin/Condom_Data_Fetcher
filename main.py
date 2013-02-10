@@ -5,6 +5,7 @@ import _env
 from mako.lookup import Template
 from BeautifulSoup import BeautifulSoup
 import pymongo
+import re
 
 PREFIX = join(dirname(abspath(__file__)))
 HTTP = 'http://www.durex.com.cn%s'
@@ -34,7 +35,7 @@ class item(Handler):
         title = soup.html.body.h1
         if not title:
             return
-        title = title.string
+        title = title.text
         subtitle = soup.findAll(attrs={'class':'f_cy f_s16b'})[0].string
         description = soup.find(attrs={'class':'f_cy f_s14 pt20'})
         if description:
@@ -44,18 +45,34 @@ class item(Handler):
         tips = soup.find(attrs={'class':'f_s14 pt20'})
         if tips:
             tips = tips.text + tips.nextSibling.nextSibling.text
-        pic1 = soup('a', href="#pic1")[0].find('img')['src']
-        pic2 = soup('a', href="#pic2")[0].find('img')['src']
-        pic3 = soup('a', href="#pic3")[0].find('img')['src']
-        spider.put(HTTP%pic1)
-        spider.put(HTTP%pic2)
-        spider.put(HTTP%pic3)
-        pic4 = soup('a', href="#pic4")
-        if pic4:
-            pic4 = pic4[0].find('img')['src']
-            spider.put(HTTP%pic4)
 
-        self.page.append((self.request.url, title, subtitle, description, smooth_index, information, tips, pic1, pic2, pic3, pic4))
+
+#        pic1 = soup('a', href="#pic1")[0].find('img')['src']
+#        pic2 = soup('a', href="#pic2")[0].find('img')['src']
+#        pic3 = soup('a', href="#pic3")[0].find('img')['src']
+#        spider.put(HTTP%pic1)
+#        spider.put(HTTP%pic2)
+#        spider.put(HTTP%pic3)
+#        pic4 = soup('a', href="#pic4")
+#        if pic4:
+#            pic4 = pic4[0].find('img')['src']
+#            spider.put(HTTP%pic4)
+#        else:
+#            pic4 = ''
+
+        #<a href="#pic1">
+        # <img title="杜蕾斯大胆爱装避孕套（正面）" src="/images/2012/05/durex_love1.png" alt="杜蕾斯大胆爱装避孕套（正面）" width="73" height="64">
+        # </a>
+        pics = soup.findAll('a', href = re.compile(r'#pic\d'))
+        if pics:
+            imageList = []
+            for pic in pics:
+                img = pic.find('img')['src']
+                print img
+                imageList.append(img)
+                spider.put(HTTP%img)
+
+        self.page.append((self.request.url, title, subtitle, description, smooth_index, information, tips, imageList))
 
     @classmethod
     def write(cls):
@@ -71,11 +88,8 @@ class item(Handler):
                             smooth_index = smooth_index,
                             information = information,
                             tips = tips,
-                            pic1 = pic1,
-                            pic2 = pic2,
-                            pic3 = pic3,
-                            pic4 = pic4
-                        ) for link, title, subtitle, description, smooth_index, information, tips, pic1, pic2, pic3, pic4 in cls.page
+                            imageList = imageList
+                        ) for link, title, subtitle, description, smooth_index, information, tips, imageList in cls.page
                     ]
                 )
             )
@@ -86,17 +100,14 @@ class item(Handler):
         db = connection.condom
         collection = db.item
 
-        for link, title, subtitle, description, smooth_index, information, tips, pic1, pic2, pic3, pic4 in cls.page:
+        for link, title, subtitle, description, smooth_index, information, tips, imageList in cls.page:
             item = {"title":title,
                     "subtitle":subtitle,
                     "description":description,
                     "smooth_index":smooth_index,
                     "information":information,
                     "tips":tips,
-                    "pic1":pic1,
-                    "pic2":pic2,
-                    "pic3":pic3,
-                    "pic4":pic4
+                    "imageList":imageList
             }
             collection.insert(item)
 
