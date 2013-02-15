@@ -1,4 +1,7 @@
 /images/*
+/images2/*
+/test/*
 /*.pyc
 .idea
+.DS_Store
 
