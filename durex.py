@@ -18,7 +18,7 @@ class products(Handler):
         result = soup.find(attrs={'class':'products'}).findAll('li')
         for li in result:
             link = li.p.a['href']
-            print link
+            print 'Fetch condom from ' + link
             spider.put(HTTP%link)
 
 
