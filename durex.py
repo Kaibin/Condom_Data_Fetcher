@@ -6,6 +6,8 @@ from mako.lookup import Template
 from BeautifulSoup import BeautifulSoup
 import pymongo
 import re
+import solr
+import random
 
 PREFIX = join(dirname(abspath(__file__)))
 HTTP = 'http://www.durex.com.cn%s'
@@ -49,7 +51,8 @@ class item(Handler):
         #<a href="#pic1">
         # <img title="杜蕾斯大胆爱装避孕套（正面）" src="/images/2012/05/durex_love1.png" alt="杜蕾斯大胆爱装避孕套（正面）" width="73" height="64">
         # </a>
-        pics = soup.findAll('a', href = re.compile(r'#pic\d'))
+#        pics = soup.findAll('a', href = re.compile(r'pic\d'))
+        pics = soup.findAll(attrs={'class':'pic1'})
         if pics:
             imageList = []
             for pic in pics:
@@ -82,12 +85,16 @@ class item(Handler):
     @classmethod
     def writedb(cls):
         page = cls.page
+        # create a connection to a mongodb
         connection = pymongo.Connection('localhost', 27017)
         db = connection.condom
         collection = db.item
+        # create a connection to a solr server
+        solrConnection = solr.SolrConnection('http://127.0.0.1:8983/solr')
 
         for link, title, subtitle, description, smooth_index, information, tips, imageList in cls.page:
-            item = {"title":title,
+            item = {
+                    "title":title,
                     "subtitle":subtitle,
                     "description":description,
                     "smooth_index":smooth_index,
@@ -95,8 +102,12 @@ class item(Handler):
                     "tips":tips,
                     "imageList":imageList
             }
-            collection.insert(item)
-
+#           insert item into mongodb
+            doc_id = collection.insert(item)
+#           add a document to the index
+            solrConnection.add(id = doc_id, title = item.get('title'), description = item.get('description'), subtitle = item.get('subtitle'), information = item.get('information'))
+#           commit to solr
+        solrConnection.commit()
 
 @route('/images/.+')
 class pic(Handler):
@@ -115,7 +126,7 @@ def save_pic(content, fname):
     f = open(fpath, 'wb')
     f.write(content)
     f.close()
-    print fname, 'saved'
+    print 'Download image: ' + fname
 
 if __name__ == '__main__':
     spider.put('http://www.durex.com.cn/products')
