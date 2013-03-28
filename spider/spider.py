@@ -6,6 +6,7 @@ import gevent
 import requests
 from urlparse import urlparse, parse_qs
 from route import Route
+from gevent.pool import Pool
 
 class Spider(object):
     cookie = None
@@ -21,7 +22,7 @@ class Spider(object):
         route = self.route
         while True:
             try:
-                url = queue.get(timeout = timeout + 10)
+                url = queue.get(timeout = timeout + 100)
             except Empty:
                 return
 
@@ -42,7 +43,7 @@ class Spider(object):
                         if i:
                             queue.put(i)
 
-    def run(self, num=10, timeout=60):
+    def run(self, num=20, timeout=600):
         self.timeout = timeout
         for i in xrange(num):
             g = gevent.spawn(self._fetch)
@@ -51,6 +52,7 @@ class Spider(object):
 
     def put(self, url):
         self.queue.put(url)
+
 
 class Handler(object):
 

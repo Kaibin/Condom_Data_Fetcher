@@ -7,7 +7,6 @@ from BeautifulSoup import BeautifulSoup
 import pymongo
 import re
 import solr
-import random
 
 PREFIX = join(dirname(abspath(__file__)))
 HTTP = 'http://www.durex.com.cn%s'
@@ -48,9 +47,6 @@ class item(Handler):
         tips = soup.find(attrs={'class':'f_s14 pt20'})
         tips = tips.text + tips.nextSibling.nextSibling.text if tips else ''
 
-        #<a href="#pic1">
-        # <img title="杜蕾斯大胆爱装避孕套（正面）" src="/images/2012/05/durex_love1.png" alt="杜蕾斯大胆爱装避孕套（正面）" width="73" height="64">
-        # </a>
 #        pics = soup.findAll('a', href = re.compile(r'pic\d'))
         pics = soup.findAll(attrs={'class':'pic1'})
         if pics:
@@ -85,11 +81,11 @@ class item(Handler):
     @classmethod
     def writedb(cls):
         page = cls.page
-        # create a connection to a mongodb
+        # create connection to mongodb
         connection = pymongo.Connection('localhost', 27017)
         db = connection.condom
         collection = db.item
-        # create a connection to a solr server
+        # create connection to solr server
         solrConnection = solr.SolrConnection('http://127.0.0.1:8983/solr')
 
         for link, title, subtitle, description, smooth_index, information, tips, imageList in cls.page:

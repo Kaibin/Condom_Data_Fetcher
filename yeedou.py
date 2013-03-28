@@ -7,6 +7,7 @@ from BeautifulSoup import BeautifulSoup
 import pymongo
 import re
 import requests
+import solr
 
 PREFIX = join(dirname(abspath(__file__)))
 HTTP = 'http://www.yeedou.com%s'
@@ -21,11 +22,17 @@ class anquantao(Handler):
             link = li.a['href']
             number = filter(lambda ch: ch in '0123456789', li.text)
             print 'Condom number:' + number
-            for pn in range(int(number)/20+1):
+            page_size = 20
+            page_num = 0
+            if(int(number)%page_size != 0):
+                page_num = int(number)/page_size + 1
+            else:
+                page_num = int(number)/page_size
+            for pn in range(page_num):
                 page = pn+1
                 url = link +'pn' +str(page)
                 print 'Fetch condom from ' + HTTP%url
-                spider.put(HTTP%link)
+                spider.put(HTTP%url)
 
 @route('/\w+-\w+/anquantao-c2441/\w*')
 class itemlist(Handler):
@@ -33,10 +40,11 @@ class itemlist(Handler):
         content = self.request.content
         soup = BeautifulSoup(''.join(content))
         result = soup.findAll(attrs={"class":"title"})
+        print self.request.url + ': ' + str(result)
         for li in result:
             link = li['href']
             link = link.replace('price','detail')
-            print link
+#            print link
             spider.put(HTTP%link)
 
 @route('/anquantao-c2441/product-detail-\d+.html')
@@ -96,7 +104,7 @@ class item(Handler):
             imageList = []
             for pic in pics:
                 img = pic['href']
-                print img
+#                print img
                 content = requests.get(HTTP%img,timeout=1000).content
                 soup = BeautifulSoup(''.join(content))
                 div = soup.find(attrs={"class":"mainbg"}).find(attrs={"type":"text/javascript"})
@@ -111,12 +119,16 @@ class item(Handler):
     @classmethod
     def writedb(cls):
         page = cls.page
+        # create connection to mongodb
         connection = pymongo.Connection('localhost', 27017)
         db = connection.condom
         collection = db.item2
+        # create connection to solr server
+        solrConnection = solr.SolrConnection('http://127.0.0.1:8983/solr')
 
         for link, title, brand, description, price, information, tips, imageList in cls.page:
-            item = {"title":title,
+            item = {
+                    "title":title,
                     "brand":brand,
                     "description":description,
                     "price":price,
@@ -124,7 +136,12 @@ class item(Handler):
                     "tips":tips,
                     "imageList":imageList
             }
-            collection.insert(item)
+#            insert item into mongodb
+            doc_id = collection.insert(item)
+#            add a document to the index
+            solrConnection.add(id = doc_id, title = item.get('title'), description = item.get('description'), brand = item.get('brand'), information = item.get('information'))
+#        commit to solr
+        solrConnection.commit()
 
 #
 #@route('/images/.+')
@@ -141,7 +158,7 @@ class item(Handler):
 #        imgSrc = img['src']
 
 def save_pic(content, fname):
-    basepath = join(PREFIX, 'images2')
+    basepath = join(PREFIX, 'images_yeedou')
     fpath = join(basepath, fname)
     f = open(fpath, 'wb')
     f.write(content)
