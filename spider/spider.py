@@ -45,17 +45,17 @@ class Spider(object):
 
     def run(self, num=20, timeout=600):
         self.timeout = timeout
-        for i in xrange(num):
-            g = gevent.spawn(self._fetch)
-        g.join()
-        gevent.shutdown()
+#        for i in xrange(num):
+#            g = gevent.spawn(self._fetch)
+#        g.join()
+#        gevent.shutdown()
+        threads = [gevent.spawn(self._fetch) for i in xrange(num)]
+        gevent.joinall(threads)
 
     def put(self, url):
         self.queue.put(url)
 
-
 class Handler(object):
-
     def __init__(self, request):
         p = urlparse(request.url)
         request.arguments = parse_qs(p.query, 1)
