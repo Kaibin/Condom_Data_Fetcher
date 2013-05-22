@@ -8,6 +8,12 @@ db.brand.insert({"name":"男子汉", "brand_id":7, "totalNumber":87,"country_fla
 db.brand.insert({"name":"冰果", "brand_id":8, "totalNumber":32,"country_flag":1, "image":"bingoo.png"})
 db.brand.insert({"name":"顽皮套套", "brand_id":9, "totalNumber":36,"country_flag":0, "image":"wanpi.png"})
 db.brand.insert({"name":"高邦", "brand_id":10, "totalNumber":20, "country_flag":0, "image":"gobon.png"})
+db.brand.insert({"name":"久耐", "brand_id":11, "totalNumber":8, "country_flag":1, "image":"jiunai.png"})
+db.brand.insert({"name":"爱超", "brand_id":12, "totalNumber":22, "country_flag":0, "image":"aichao.png"})
+db.brand.insert({"name":"宝狮", "brand_id":13, "totalNumber":15, "country_flag":1, "image":"polylion.png"})
+db.brand.insert({"name":"CLUB", "brand_id":14, "totalNumber":5, "country_flag":1, "image":"club.png"})
+db.brand.insert({"name":"诺丝", "brand_id":15, "totalNumber":3, "country_flag":1, "image":"nox.png"})
+
 
 db.brand.ensureIndex({"name":1})
 
@@ -21,3 +27,8 @@ db.brand.update({"name":"男子汉"}, {$set:{"introduction":"\t男子汉安全�
 db.brand.update({"name":"冰果"}, {$set:{"introduction":"\t冰果避孕套是由马来西亚豪威医疗产品有限公司（HEVEA MEDICAL SDN.BHD）生产。是一款主打卡通可爱形象的避孕套。冰果商标马来西亚豪威医疗产品有限公司是马来西亚著名的橡胶品生产企业。旗下品牌有冰果，非非，007等。"}});
 db.brand.update({"name":"顽皮套套"}, {$set:{"introduction":"\t顽皮套套品牌的推出打破了传统观念，避孕套做为礼品，情趣，搞笑等多种形式推出，避免了很多的尴尬，多了浪漫和更人性化的理念设计，您是否还在为各种的节日送什么礼物给爱人，伴侣，朋友而犯愁呢，每次过节送同样的礼物是否已经没有了新意，那就来选购顽皮套套系列吧，保证让收到礼物的人感到惊喜和创新，送给最爱的人多了一份浪漫，还能保证生活质量和谐。 "}});
 db.brand.update({"name":"高邦"}, {$set:{"introduction":"\t高邦安全套中国名牌，由中国最大的安全套生产企业之一，桂林乳胶厂生产， 桂林乳胶厂于1966年由国家原化工部投资建设，是国家化工部重点企业和国家人口与计划生育委员会安全套定点生产厂家，国家二级企业，并于1999年通过了德国莱茵公司的ISO9001和ISO13485体系认证，成为中国境内乳胶行业唯一获得美国PATH机构认可贯彻实施GMP规范的企业。"}});
+db.brand.update({"name":"久耐"}, {$set:{"introduction":"\t久奈（天津）健康用品有限公司成立于2009年4月，是日本不二乳胶株式会社在中国的战略合作伙伴。2010年10月接受全球著名风投公司IDG融资。\n\t“久奈系列安全套”全部由日本不二乳胶株式会社在日本生产，进口到国内销售，该系列产品于2009年下半年开始在国内市场上市，目前拥有10种规格22个品规的产品投入到市场上销售。久奈系列产品现已进入国内各大中型商超市场，包括屈臣氏、家乐福、大润发、华润万家、北京华联、世纪联华、欧尚、永辉超市、易买得、物美超市、乐天玛特、日本吉之岛百货、武商量贩旗下门店、中百集团旗下门店等，久奈旗下产品还将陆续进入到各大全国性连锁超市。\n\t公司成立初期吸纳了2006年已在国内开始生产销售的“倾城系列安全套”，2009年将倾城全线产品改到由马来西亚生产加工，进口到国内销售，由国产改为进口提升了产品的整体品质，也使倾城系列加固了已有的市场份额。"}});
+db.brand.update({"name":"爱超"}, {$set:{"introduction":"\t美国爱超国际集团有限公司旗下桂林爱超乳胶制品有限公司是一家专业生产、销售及进出口各类天然胶乳橡胶避孕套、水溶性橡胶避孕套的公司。生产所用的原材料均来源于纯天然乳胶，并严格按国标GB7544-2004/ISO4074：2002标准组织生产。生产体系已通过ISO13485认证、中国强制CCC认证、欧盟CE认证，并荣获中国驰名品牌称号。"}});
+db.brand.update({"name":"宝狮"}, {$set:{"introduction":"\tPolyLion[马来西亚宝狮]天然胶乳橡胶避孕套，进口安全套四大强势品牌！精选优质进口天然胶乳制成，每只避孕套均经过精密的电子针孔测试，品质可靠，正确使用避孕套，可降低艾滋病等性病的感染机会，并有效避孕，避孕套应置于阴凉干燥之处，避免阳光直射，取用时防止被尖锐物品损伤，避孕套为一次性使用。003体贴装是一种超薄型安全套，单层壁厚度仅0.03mm,而一般天然橡胶制作的安全套单层壁厚为0.04-0.06mm。 超薄型安全套让男性感受真实，可杜绝由于安全套造成的‘隔一层安全套影响性交快感的’不舒服感觉，让男性即使带着安全套也能真真切切的感受到无间隔的快感。从而使性爱双方都感觉愉悦。"}});
+db.brand.update({"name":"CLUB"}, {$set:{"introduction":"\tCLUB[科比]马来西亚进口安全套003极限超薄12支装为超薄型，香橙味，有储精囊，添加润滑剂，不含杀精剂，不杀伤精子，让您的爱超越极限，从此没有距离。"}});
+db.brand.update({"name":"诺丝"}, {$set:{"introduction":"\t诺丝避孕套是由总部位于美国纽约的美国诺丝集团出品的避孕套产品，美国诺丝集团从事性保健品生产和销售已有多年历史，产品行销美国及欧洲市场，因其产品良好的品质和良好的用户体验，多年来一直备受消费者的信赖，90年代后期，诺丝开始进军香港、台湾市场，获得良好的市场反映，2000年，诺丝开始进入中国市场，现在中国有两个总代理，一个在上海，一个在广东省的中山市。"}});

@@ -33,7 +33,6 @@ class Spider(object):
 
             req = requests.get(url, timeout = timeout, headers = headers)
             p = urlparse(req.url)
-            #print p.path
             cls, args = route.match(p.path)
             if cls:
                 o = cls(req)  #构造一个Handler对象

@@ -46,14 +46,15 @@ class article(Handler):
         content = ''
         children = data.find('div').findChildren()
         nodes = children[4:-4]
+        print nodes
         for child in nodes:
             child = child.text.replace('&nbsp;','')
             child = child.replace('&ldquo;','“')
             child = child.replace('&rdquo;','”')
             child = child.replace('&hellip;','.')
             child = child.replace('&quot;','”')
-        content = content + child + "\n"
-        print content
+            content = content + child + "\n"
+#        print content
 
         article = {'title': title, 'author':author, 'date':date, 'content':content}
         articles.insert(article)

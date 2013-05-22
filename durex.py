@@ -98,9 +98,9 @@ class item(Handler):
                     "imageList":imageList
             }
 #           insert item into mongodb
-#            doc_id = collection.insert(item)
+            doc_id = collection.insert(item)
 #           add a document to the index
-#            solrConnection.add(id = doc_id, title = item.get('title'), description = item.get('description'), subtitle = item.get('subtitle'), information = item.get('information'))
+            solrConnection.add(id = doc_id, title = item.get('title'), description = item.get('description'), subtitle = item.get('subtitle'), information = item.get('information'))
 #           commit to solr
         solrConnection.commit()
 
