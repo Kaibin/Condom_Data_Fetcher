@@ -54,27 +54,30 @@ class article(Handler):
             child = child.replace('&hellip;','.')
             child = child.replace('&quot;','”')
             content = content + child + "\n"
-#        print content
 
-        article = {'title': title, 'author':author, 'date':date, 'content':content}
+        article = {'cat_id':4, 'title':title, 'author':author, 'date':date, 'content':content}
         articles.insert(article)
 
 
 if __name__ == '__main__':
-    spider.put('http://aiailove.cn/article_cat-4-1.html')
-    spider.put('http://aiailove.cn/article_cat-4-2.html')
-    spider.put('http://aiailove.cn/article_cat-4-3.html')
-    spider.put('http://aiailove.cn/article_cat-4-4.html')
-    spider.put('http://aiailove.cn/article_cat-4-5.html')
+    #cat_id = 1 cat_name = '性用品使用交流'
+#    spider.put('http://aiailove.cn/article_cat-4-1.html')
+#    spider.put('http://aiailove.cn/article_cat-4-2.html')
+#    spider.put('http://aiailove.cn/article_cat-4-3.html')
+#    spider.put('http://aiailove.cn/article_cat-4-4.html')
+#    spider.put('http://aiailove.cn/article_cat-4-5.html')
 
-    spider.put('http://aiailove.cn/article_cat-5-1.html')
-    spider.put('http://aiailove.cn/article_cat-5-2.html')
-    spider.put('http://aiailove.cn/article_cat-5-3.html')
+    #cat_id = 2 cat_name = '情趣用品使用方法'
+#    spider.put('http://aiailove.cn/article_cat-5-1.html')
+#    spider.put('http://aiailove.cn/article_cat-5-2.html')
+#    spider.put('http://aiailove.cn/article_cat-5-3.html')
 
-    spider.put('http://aiailove.cn/article_cat-6-1.html')
-    spider.put('http://aiailove.cn/article_cat-6-2.html')
-    spider.put('http://aiailove.cn/article_cat-6-3.html')
+    #cat_id = 3 cat_name = '性保健知识'
+#    spider.put('http://aiailove.cn/article_cat-6-1.html')
+#    spider.put('http://aiailove.cn/article_cat-6-2.html')
+#    spider.put('http://aiailove.cn/article_cat-6-3.html')
 
+    #cat_id = 4 cat_name = '成人用品'
     spider.put('http://aiailove.cn/article_cat-7-1.html')
     spider.put('http://aiailove.cn/article_cat-7-2.html')
     spider.put('http://aiailove.cn/article_cat-7-3.html')
