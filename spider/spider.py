@@ -44,10 +44,6 @@ class Spider(object):
 
     def run(self, num=20, timeout=600):
         self.timeout = timeout
-#        for i in xrange(num):
-#            g = gevent.spawn(self._fetch)
-#        g.join()
-#        gevent.shutdown()
         threads = [gevent.spawn(self._fetch) for i in xrange(num)]
         gevent.joinall(threads)
 
