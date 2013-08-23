@@ -35,7 +35,6 @@ class article(Handler):
         content = soup.find(attrs = {'class':'bbs-content clearfix'}).text
         print content
 
-
 if __name__ == '__main__':
     spider.put('http://www.tianya.cn/search/bbs?q=安全套&pn=1')
     spider.run(5,100)
